@@ -259,30 +259,59 @@ export function AppearanceForm({
                       />
                     </div>
 
-                    <div className="space-y-2 p-3">
+                    {/* Hero */}
+                    <div
+                      className="px-3 py-2.5"
+                      style={{ backgroundColor: theme.tokens.muted, opacity: 0.5 }}
+                    >
                       <div
                         className="h-2.5 w-2/3 rounded-full"
                         style={{ backgroundColor: theme.tokens.primary }}
                       />
                       <div
-                        className="h-2 w-1/2 rounded-full"
-                        style={{ backgroundColor: theme.tokens.secondary, opacity: 0.6 }}
+                        className="mt-1.5 h-1.5 w-1/2 rounded-full"
+                        style={{ backgroundColor: theme.tokens.foreground, opacity: 0.5 }}
                       />
-                      <div className="mt-3 grid grid-cols-3 gap-1.5">
-                        {[0, 1, 2].map((index) => (
+                    </div>
+
+                    {/* Product grid */}
+                    <div className="grid grid-cols-3 gap-1.5 p-3">
+                      {[0, 1, 2].map((index) => (
+                        <div
+                          key={index}
+                          className="overflow-hidden rounded-md"
+                          style={{ backgroundColor: theme.tokens.muted }}
+                        >
                           <div
-                            key={index}
-                            className="aspect-square rounded-md"
+                            className="aspect-square"
                             style={{
-                              backgroundColor: index === 1 ? theme.tokens.accent : theme.tokens.muted,
-                              opacity: index === 1 ? 0.9 : 1,
+                              backgroundColor:
+                                index === 1 ? theme.tokens.accent : theme.tokens.primary,
+                              opacity: index === 1 ? 0.85 : 0.25,
                             }}
                           />
-                        ))}
-                      </div>
+                          <div className="space-y-1 p-1.5">
+                            <div
+                              className="h-1.5 w-full rounded-full"
+                              style={{ backgroundColor: theme.tokens.foreground, opacity: 0.7 }}
+                            />
+                            <div
+                              className="h-1.5 w-2/3 rounded-full"
+                              style={{ backgroundColor: theme.tokens.primary }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Footer bar */}
+                    <div
+                      className="absolute inset-x-0 bottom-0 border-t border-black/5 px-3 py-1.5"
+                      style={{ backgroundColor: theme.tokens.muted, opacity: 0.4 }}
+                    >
                       <div
-                        className="mt-2 h-6 w-20 rounded-md"
-                        style={{ backgroundColor: theme.tokens.primary }}
+                        className="mx-auto h-1 w-1/3 rounded-full"
+                        style={{ backgroundColor: theme.tokens.foreground, opacity: 0.4 }}
                       />
                     </div>
                   </div>
