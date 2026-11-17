@@ -28,7 +28,7 @@ function StoreShell({
       style={styleFromTokens(store.tokens)}
       className="flex min-h-dvh flex-col bg-[var(--store-bg)] text-[var(--store-fg)]"
     >
-      <header className="sticky top-0 z-30 border-b border-black/5 bg-[var(--store-bg)]/90 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-[var(--store-fg)]/10 bg-[var(--store-bg)]/80 backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-4">
           <Link
             href={`/tienda/${store.slug}`}
