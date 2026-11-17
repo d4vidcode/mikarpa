@@ -1,21 +1,20 @@
 export const instant = false;
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getStoreBySlug } from '@/lib/tenant';
-import { toPublicStore } from '@/lib/storefront';
+import { getCachedStore } from '@/lib/cache/store';
 import { CartView } from '@/components/storefront/cart-view';
 
 export const metadata: Metadata = { title: 'Carrito' };
 
 export default async function CartPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const store = await getStoreBySlug(slug);
+  const store = await getCachedStore(slug);
 
   if (!store || store.status !== 'active') {
     notFound();
   }
 
-  const publicStore = toPublicStore(store);
+  const publicStore = store;
 
   if (!publicStore.whatsapp.enabled || !publicStore.whatsapp.phone) {
     return (

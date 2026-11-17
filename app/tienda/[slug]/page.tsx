@@ -3,11 +3,6 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Search } from 'lucide-react';
 import { getCachedStore, getCachedCategories, getCachedProducts } from '@/lib/cache/store';
-import {
-  toPublicCategory,
-  toPublicProduct,
-  toPublicStore,
-} from '@/lib/storefront';
 import { getTheme } from '@/themes/registry';
 import { getSectionDefinition } from '@/themes/sections/registry';
 import { ProductCard } from '@/components/storefront/product-card';
@@ -28,7 +23,7 @@ export default async function StorefrontPage({
     notFound();
   }
 
-  const storeId = String(store._id);
+  const storeId = store.id;
   const search = query.q?.trim() ?? '';
   const categorySlug = query.categoria?.trim() ?? '';
 
@@ -40,7 +35,7 @@ export default async function StorefrontPage({
   if (categorySlug) {
     const category = categories.find((item) => item.slug === categorySlug);
     if (category) {
-      categoryId = String(category._id);
+      categoryId = category.id;
     } else {
       categoryMissing = true;
     }
@@ -50,23 +45,23 @@ export default async function StorefrontPage({
 
   let products = allProducts;
   if (categoryId) {
-    products = products.filter((product) => String(product.categoryId) === categoryId);
+    products = products.filter((product) => product.categoryId === categoryId);
   }
   if (search) {
     const safe = search.toLowerCase();
     products = products.filter((product) =>
-      [product.name, product.descriptionText, ...(product.tags ?? [])]
+      [product.name, product.descriptionText]
         .filter(Boolean)
         .some((value) => String(value).toLowerCase().includes(safe)),
     );
   }
   products = products.slice(0, 120);
 
-  const publicStore = toPublicStore(store);
+  const publicStore = store;
   const data = {
     store: publicStore,
-    products: products.map(toPublicProduct),
-    categories: categories.map(toPublicCategory),
+    products,
+    categories,
   };
 
   const filtered = Boolean(search || categorySlug);
@@ -114,7 +109,7 @@ export default async function StorefrontPage({
           >
             Todo
           </Link>
-          {data.categories.map((category) => {
+          {data.categories.map((category: { id: string; slug: string; name: string }) => {
             const active = category.slug === categorySlug;
             const searchParams = search ? `&q=${encodeURIComponent(search)}` : '';
             return (

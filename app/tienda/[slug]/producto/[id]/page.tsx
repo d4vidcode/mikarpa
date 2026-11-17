@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ChevronRight, Truck } from 'lucide-react';
 import { getCachedStore, getCachedProduct, getCachedRelatedProducts, getCachedCategories } from '@/lib/cache/store';
-import { toPublicProduct, toPublicStore, effectiveStock } from '@/lib/storefront';
+import { effectiveStock } from '@/lib/storefront';
 import { ProductCard } from '@/components/storefront/product-card';
 import { AddToCartForm } from '@/components/storefront/add-to-cart';
 import { ProductGallery } from '@/components/storefront/product-gallery';
@@ -20,7 +20,7 @@ export async function generateMetadata({
     return { title: 'Producto no encontrado' };
   }
 
-  const product = await getCachedProduct(String(store._id), id);
+  const product = await getCachedProduct(store.id, id);
 
   if (!product) {
     return { title: 'Producto no encontrado' };
@@ -49,27 +49,26 @@ export default async function ProductPage({
     notFound();
   }
 
-  const productDoc = await getCachedProduct(String(store._id), id);
+  const productDoc = await getCachedProduct(store.id, id);
 
   if (!productDoc) {
     notFound();
   }
 
-  const categories = await getCachedCategories(String(store._id));
+  const categories = await getCachedCategories(store.id);
   const category = productDoc.categoryId
-    ? categories.find((item) => String(item._id) === String(productDoc.categoryId)) ?? null
+    ? categories.find((item) => item.id === productDoc.categoryId) ?? null
     : null;
 
-  const relatedDocs = await getCachedRelatedProducts(
-    String(store._id),
+  const related = await getCachedRelatedProducts(
+    store.id,
     productDoc.categoryId ? String(productDoc.categoryId) : null,
     id,
   );
 
-  const publicStore = toPublicStore(store);
-  const product = toPublicProduct(productDoc);
+  const publicStore = store;
+  const product = productDoc;
   const stock = effectiveStock(product);
-  const related = relatedDocs.map(toPublicProduct);
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-6">

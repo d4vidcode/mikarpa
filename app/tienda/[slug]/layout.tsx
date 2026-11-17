@@ -3,8 +3,7 @@ import Link from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { connectDB } from '@/lib/db';
 import { Store } from '@/models';
-import { getStoreBySlug } from '@/lib/tenant';
-import { toPublicStore } from '@/lib/storefront';
+import { getCachedStore } from '@/lib/cache/store';
 import { getTheme } from '@/themes/registry';
 
 export async function generateMetadata({
@@ -13,7 +12,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const store = await getStoreBySlug(slug);
+  const store = await getCachedStore(slug);
 
   if (!store) {
     return { title: 'Tienda no encontrada' };
@@ -63,7 +62,7 @@ export default async function StoreLayout({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const store = await getStoreBySlug(slug);
+  const store = await getCachedStore(slug);
 
   if (!store || store.status === 'archived') {
     await connectDB();
@@ -80,7 +79,7 @@ export default async function StoreLayout({
     return <SuspendedStore name={store.name} />;
   }
 
-  const publicStore = toPublicStore(store);
+  const publicStore = store;
   const Shell = getTheme(publicStore.themeKey).Shell;
 
   return <Shell store={publicStore}>{children}</Shell>;
