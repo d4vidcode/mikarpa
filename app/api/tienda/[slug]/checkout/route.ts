@@ -227,7 +227,7 @@ export async function POST(
           },
         },
       ],
-      { upsert: true, returnDocument: 'after' },
+      { upsert: true, returnDocument: 'after', updatePipeline: true },
     ).lean();
 
     orderNumber = counter?.seq ?? ORDER_NUMBER_START;

@@ -93,7 +93,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ sl
   const counter = await Counter.findOneAndUpdate(
     { _id: `order:${String(store._id)}` },
     [{ $set: { seq: { $add: [{ $ifNull: ['$seq', ORDER_NUMBER_START - 1] }, 1] } } }],
-    { upsert: true, returnDocument: 'after' },
+    { upsert: true, returnDocument: 'after', updatePipeline: true },
   ).lean();
 
   const orderNumber = counter?.seq ?? ORDER_NUMBER_START;
