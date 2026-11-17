@@ -36,6 +36,8 @@ export default async function AppearancePage({ params }: { params: Promise<{ slu
       background: item.tokens.background ?? '#ffffff',
       foreground: item.tokens.foreground ?? '#111827',
       radius: item.tokens.radius ?? '0.5rem',
+      secondary: item.tokens.secondary ?? '#6b7280',
+      muted: item.tokens.muted ?? '#f3f4f6',
     },
   }));
 

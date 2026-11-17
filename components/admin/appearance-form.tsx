@@ -31,6 +31,8 @@ export type AppearanceThemeOption = {
     background: string;
     foreground: string;
     radius: string;
+    secondary?: string;
+    muted?: string;
   };
 };
 
@@ -220,7 +222,7 @@ export function AppearanceForm({
             El tema define la estructura visual. Los colores se pueden afinar debajo.
           </p>
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {themes.map((theme) => {
               const selected = theme.key === themeKey;
               return (
@@ -229,29 +231,84 @@ export function AppearanceForm({
                   type="button"
                   onClick={() => selectTheme(theme)}
                   aria-pressed={selected}
-                  className={`rounded-xl border p-4 text-left transition-colors ${
-                    selected ? 'border-primary ring-2 ring-primary/20' : 'border-border hover:bg-accent'
+                  className={`group relative overflow-hidden rounded-2xl border bg-white text-left transition-all duration-200 ${
+                    selected
+                      ? 'border-transparent ring-2 ring-blue-600 shadow-xl shadow-blue-500/10'
+                      : 'border-slate-200 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/5'
                   }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-semibold">{theme.name}</span>
-                    {selected ? <Check className="size-4 text-primary" aria-hidden /> : null}
-                  </div>
-                  <p className="mt-1 text-xs text-muted-foreground">{theme.description}</p>
-                  <div className="mt-3 flex gap-1.5">
-                    {[
-                      theme.tokens.primary,
-                      theme.tokens.accent,
-                      theme.tokens.background,
-                      theme.tokens.foreground,
-                    ].map((color) => (
+                  {selected ? (
+                    <span className="absolute top-3 right-3 z-10 inline-flex items-center gap-1 rounded-full bg-blue-600 px-2.5 py-1 text-[11px] font-semibold text-white shadow-md">
+                      <Check className="size-3" aria-hidden />
+                      Activo
+                    </span>
+                  ) : null}
+
+                  {/* Mini browser mockup */}
+                  <div
+                    className="relative aspect-[4/3] w-full overflow-hidden border-b border-slate-100"
+                    style={{ backgroundColor: theme.tokens.background }}
+                  >
+                    <div className="flex items-center gap-1.5 border-b border-black/5 px-3 py-2">
+                      <span className="size-2 rounded-full bg-red-400/80" />
+                      <span className="size-2 rounded-full bg-amber-400/80" />
+                      <span className="size-2 rounded-full bg-emerald-400/80" />
                       <span
-                        key={color}
-                        className="size-6 rounded-full border border-black/10"
-                        style={{ backgroundColor: color }}
-                        aria-hidden
+                        className="ml-2 h-2 flex-1 rounded-full"
+                        style={{ backgroundColor: theme.tokens.muted }}
                       />
-                    ))}
+                    </div>
+
+                    <div className="space-y-2 p-3">
+                      <div
+                        className="h-2.5 w-2/3 rounded-full"
+                        style={{ backgroundColor: theme.tokens.primary }}
+                      />
+                      <div
+                        className="h-2 w-1/2 rounded-full"
+                        style={{ backgroundColor: theme.tokens.secondary, opacity: 0.6 }}
+                      />
+                      <div className="mt-3 grid grid-cols-3 gap-1.5">
+                        {[0, 1, 2].map((index) => (
+                          <div
+                            key={index}
+                            className="aspect-square rounded-md"
+                            style={{
+                              backgroundColor: index === 1 ? theme.tokens.accent : theme.tokens.muted,
+                              opacity: index === 1 ? 0.9 : 1,
+                            }}
+                          />
+                        ))}
+                      </div>
+                      <div
+                        className="mt-2 h-6 w-20 rounded-md"
+                        style={{ backgroundColor: theme.tokens.primary }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 p-4">
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="text-sm font-semibold text-slate-900">{theme.name}</h3>
+                      <div className="flex gap-1">
+                        {[
+                          theme.tokens.primary,
+                          theme.tokens.accent,
+                          theme.tokens.background,
+                          theme.tokens.muted,
+                        ].map((color) => (
+                          <span
+                            key={color}
+                            className="size-3.5 rounded-full border border-black/10"
+                            style={{ backgroundColor: color }}
+                            aria-hidden
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <p className="line-clamp-2 text-xs leading-relaxed text-slate-500">
+                      {theme.description}
+                    </p>
                   </div>
                 </button>
               );
