@@ -4,7 +4,6 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { connectDB } from '@/lib/db';
 import { Store } from '@/models';
 import { getCachedStore } from '@/lib/cache/store';
-import { getTheme } from '@/themes/registry';
 
 export async function generateMetadata({
   params,
@@ -54,6 +53,13 @@ function SuspendedStore({ name }: { name: string }) {
   );
 }
 
+/**
+ * Layout compartido solo para validación/metadata.
+ *
+ * Importante: NO aplica el Shell ni variables --store-* aquí. Si se aplicara,
+ * también envolvería /tienda/[slug]/administracion/* porque Next.js hereda los
+ * layouts por segmento. El Shell del storefront vive en (tienda)/layout.tsx.
+ */
 export default async function StoreLayout({
   children,
   params,
@@ -79,8 +85,5 @@ export default async function StoreLayout({
     return <SuspendedStore name={store.name} />;
   }
 
-  const publicStore = store;
-  const Shell = getTheme(publicStore.themeKey).Shell;
-
-  return <Shell store={publicStore}>{children}</Shell>;
+  return <>{children}</>;
 }

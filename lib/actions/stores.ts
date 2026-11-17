@@ -1,7 +1,7 @@
 'use server';
 
 import crypto from 'node:crypto';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { PaymentAccount, Store, StoreCategory, StoreMember, User } from '@/models';
 import { recordAudit } from '@/lib/audit';
@@ -387,6 +387,10 @@ export async function updateAppearanceAction(
     after: { themeKey: theme.key, sections: sections.length },
   });
 
+  // El DTO del storefront usa 'use cache' + cacheTag(`store-${slug}`).
+  // updateTag garantiza read-your-own-writes: el siguiente request al storefront
+  // obtiene el themeKey/tokens nuevos (revalidatePath solo no basta para el layout).
+  updateTag(`store-${slug}`);
   revalidatePath(`/tienda/${slug}`);
   revalidatePath(`/tienda/${slug}/administracion/apariencia`);
 

@@ -170,6 +170,8 @@ export default async function StorefrontPage({
 
   const sections = configured
     .filter((section) => section.enabled)
+    // La plantilla Boutique ya incluye su propio pie de página en el Shell.
+    .filter((section) => !(theme.key === 'boutique' && section.type === 'footer'))
     .sort((a, b) => a.order - b.order);
 
   return (

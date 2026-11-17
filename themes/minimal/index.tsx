@@ -16,13 +16,13 @@ function styleFromTokens(tokens: StoreThemeTokens): React.CSSProperties {
   } as React.CSSProperties;
 }
 
-function StoreShell({
-  store,
-  children,
-}: {
+type ShellProps = {
   store: { name: string; slug: string; logoUrl: string | null; tokens: StoreThemeTokens };
   children: React.ReactNode;
-}) {
+};
+
+/** Plantilla 1 · Por defecto: header sticky, logo a la izquierda, carrito a la derecha. */
+function StoreShell({ store, children }: ShellProps) {
   return (
     <div
       style={styleFromTokens(store.tokens)}
@@ -61,7 +61,110 @@ function StoreShell({
         </div>
       </header>
 
-      <main id="contenido" className="flex-1">{children}</main>
+      <main id="contenido" className="flex-1">
+        {children}
+      </main>
+    </div>
+  );
+}
+
+/** Plantilla 2 · Moderna: barra compacta con buscador y acento de color. */
+function ModernShell({ store, children }: ShellProps) {
+  return (
+    <div
+      style={styleFromTokens(store.tokens)}
+      className="flex min-h-dvh flex-col bg-[var(--store-bg)] text-[var(--store-fg)]"
+    >
+      <div className="h-1 w-full bg-[var(--store-primary)]" />
+      <header className="sticky top-0 z-30 border-b border-[var(--store-fg)]/10 bg-[var(--store-bg)]/90 backdrop-blur-md">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3">
+          <Link href={`/tienda/${store.slug}`} className="flex items-center gap-2" aria-label={`${store.name}, inicio`}>
+            <span className="flex size-9 items-center justify-center rounded-lg bg-[var(--store-primary)] text-xs font-bold text-white">
+              {store.name.slice(0, 2).toUpperCase()}
+            </span>
+            <span className="text-base font-semibold tracking-tight">{store.name}</span>
+          </Link>
+
+          <div className="hidden flex-1 items-center justify-center md:flex">
+            <div className="flex w-full max-w-md items-center gap-2 rounded-full border border-[var(--store-fg)]/15 px-4 py-2 text-sm text-[var(--store-fg)]/60">
+              Buscar productos…
+            </div>
+          </div>
+
+          <Link
+            href={`/tienda/${store.slug}/carrito`}
+            className="inline-flex items-center gap-2 rounded-full bg-[var(--store-primary)] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+          >
+            Carrito
+            <CartIndicator storeSlug={store.slug} />
+          </Link>
+        </div>
+      </header>
+
+      <main id="contenido" className="flex-1">
+        {children}
+      </main>
+    </div>
+  );
+}
+
+/** Plantilla 3 · Boutique: cabecera editorial centrada, serif y pie de página propio. */
+function BoutiqueShell({ store, children }: ShellProps) {
+  return (
+    <div
+      style={styleFromTokens(store.tokens)}
+      className="flex min-h-dvh flex-col bg-[var(--store-bg)] text-[var(--store-fg)]"
+    >
+      <header className="border-b border-[var(--store-fg)]/10 bg-[var(--store-bg)]">
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-6 py-6 sm:flex-row sm:items-center sm:justify-between">
+          <Link
+            href={`/tienda/${store.slug}`}
+            className="flex items-center justify-center gap-3 sm:justify-start"
+            aria-label={`${store.name}, inicio`}
+          >
+            {store.logoUrl ? (
+              <Image
+                src={store.logoUrl}
+                alt=""
+                width={44}
+                height={44}
+                className="size-11 rounded-full object-cover"
+              />
+            ) : (
+              <span className="flex size-11 items-center justify-center rounded-full bg-[var(--store-primary)] font-serif text-lg text-white">
+                {store.name.slice(0, 1)}
+              </span>
+            )}
+            <span className="font-serif text-2xl tracking-tight">{store.name}</span>
+          </Link>
+
+          <nav className="flex items-center justify-center gap-6 text-sm">
+            <Link
+              href={`/tienda/${store.slug}`}
+              className="text-[var(--store-fg)]/70 hover:text-[var(--store-primary)]"
+            >
+              Colección
+            </Link>
+            <Link
+              href={`/tienda/${store.slug}/carrito`}
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--store-primary)] px-4 py-2 font-medium text-[var(--store-primary)] hover:bg-[var(--store-primary)] hover:text-white"
+            >
+              Carrito
+              <CartIndicator storeSlug={store.slug} />
+            </Link>
+          </nav>
+        </div>
+      </header>
+
+      <main id="contenido" className="flex-1">
+        {children}
+      </main>
+
+      <footer className="border-t border-[var(--store-fg)]/10 bg-[var(--store-muted)]/40">
+        <div className="mx-auto w-full max-w-5xl px-6 py-8 text-center text-sm text-[var(--store-fg)]/60">
+          © {store.name} · Tienda creada con mikarpa
+        </div>
+      </footer>
     </div>
   );
 }
@@ -124,8 +227,8 @@ const storefrontSections: ThemeDefaultSection[] = [
 
 export const minimalTheme: ThemeDefinition = {
   key: 'minimal',
-  name: 'Minimal',
-  description: 'Limpio, tipografía grande y mucho aire. Ideal para marcas modernas.',
+  name: 'Predeterminada',
+  description: 'Diseño clásico de mikarpa: cabecera fija, logo y carrito. El más versátil.',
   tokens: {
     primary: '#111827',
     secondary: '#6b7280',
@@ -143,8 +246,8 @@ export const minimalTheme: ThemeDefinition = {
 
 export const modernTheme: ThemeDefinition = {
   key: 'modern',
-  name: 'Modern',
-  description: 'Limpio y luminoso, con azul eléctrico y mucho espacio. Ideal para tecnología y lifestyle.',
+  name: 'Moderna',
+  description: 'Cabecera compacta con buscador y franja de color. Ideal para tecnología y lifestyle.',
   tokens: {
     primary: '#2563eb',
     secondary: '#64748b',
@@ -157,13 +260,50 @@ export const modernTheme: ThemeDefinition = {
     fontBody: 'Inter',
   },
   defaultSections: storefrontSections,
-  Shell: StoreShell,
+  Shell: ModernShell,
+};
+
+export const boutiqueTheme: ThemeDefinition = {
+  key: 'boutique',
+  name: 'Boutique',
+  description: 'Cabecera editorial centrada, tipografía serif y pie de página propio.',
+  tokens: {
+    primary: '#7c2d12',
+    secondary: '#a16207',
+    accent: '#be123c',
+    background: '#fffbf5',
+    foreground: '#292524',
+    muted: '#f5efe6',
+    radius: '1rem',
+    fontHeading: 'Fraunces',
+    fontBody: 'Inter',
+  },
+  defaultSections: storefrontSections.map((section) => {
+    if (section.key === 'hero') {
+      return {
+        ...section,
+        config: {
+          title: 'Piezas elegidas con cariño',
+          subtitle: 'Una colección pequeña, pensada para durar.',
+          ctaLabel: 'Explorar colección',
+        },
+      };
+    }
+    if (section.key === 'featured') {
+      return { ...section, config: { title: 'Favoritos', limit: 6 } };
+    }
+    if (section.key === 'newArrivals') {
+      return { ...section, config: { title: 'Recién llegado', limit: 6 } };
+    }
+    return section;
+  }),
+  Shell: BoutiqueShell,
 };
 
 export const darkTheme: ThemeDefinition = {
   key: 'dark',
-  name: 'Dark',
-  description: 'Oscuro y premium, con acentos neón. Para marcas con carácter y productos tech.',
+  name: 'Oscura',
+  description: 'Variante oscura de la plantilla por defecto, con acentos vivos.',
   tokens: {
     primary: '#a78bfa',
     secondary: '#94a3b8',
@@ -181,8 +321,8 @@ export const darkTheme: ThemeDefinition = {
 
 export const warmTheme: ThemeDefinition = {
   key: 'warm',
-  name: 'Warm',
-  description: 'Cálido y cercano, con tonos tierra y serif. Para artesanía, comida y hogar.',
+  name: 'Cálida',
+  description: 'Variante cálida de la plantilla por defecto, con tonos tierra.',
   tokens: {
     primary: '#b45309',
     secondary: '#78716c',
@@ -195,78 +335,5 @@ export const warmTheme: ThemeDefinition = {
     fontBody: 'Inter',
   },
   defaultSections: storefrontSections,
-  Shell: StoreShell,
-};
-
-export const boutiqueTheme: ThemeDefinition = {
-  key: 'boutique',
-  name: 'Boutique',
-  description: 'Cálido y editorial, con serif y tarjetas suaves. Para marcas con carácter.',
-  tokens: {
-    primary: '#7c2d12',
-    secondary: '#a16207',
-    accent: '#be123c',
-    background: '#fffbf5',
-    foreground: '#292524',
-    muted: '#f5efe6',
-    radius: '1rem',
-    fontHeading: 'Fraunces',
-    fontBody: 'Inter',
-  },
-  defaultSections: [
-    {
-      key: 'hero',
-      type: 'hero',
-      enabled: true,
-      order: 0,
-      config: {
-        title: 'Piezas elegidas con cariño',
-        subtitle: 'Una colección pequeña, pensada para durar.',
-        ctaLabel: 'Explorar colección',
-      },
-    },
-    {
-      key: 'featured',
-      type: 'featured',
-      enabled: true,
-      order: 1,
-      config: { title: 'Favoritos', limit: 6 },
-    },
-    {
-      key: 'categories',
-      type: 'categories',
-      enabled: true,
-      order: 2,
-      config: { title: 'Categorías' },
-    },
-    {
-      key: 'catalog',
-      type: 'catalog',
-      enabled: true,
-      order: 3,
-      config: { title: 'Catálogo', limit: 24 },
-    },
-    {
-      key: 'newArrivals',
-      type: 'newArrivals',
-      enabled: true,
-      order: 4,
-      config: { title: 'Recién llegado', limit: 6 },
-    },
-    {
-      key: 'whatsappFloat',
-      type: 'whatsappFloat',
-      enabled: true,
-      order: 5,
-      config: { message: 'Hola, quiero más información' },
-    },
-    {
-      key: 'footer',
-      type: 'footer',
-      enabled: true,
-      order: 6,
-      config: { showSocial: true },
-    },
-  ],
   Shell: StoreShell,
 };

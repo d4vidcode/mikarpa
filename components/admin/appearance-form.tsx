@@ -17,11 +17,11 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ArrowDown, ArrowUp, GripVertical, Loader2, Palette } from 'lucide-react';
+import { ArrowDown, ArrowUp, Check, GripVertical, Loader2, Palette } from 'lucide-react';
 import { updateAppearanceAction, type StoreFormState } from '@/lib/actions/stores';
 import { Button } from '@/components/ui/button';
 
-export type AppearanceThemeOption = {
+export type AppearanceTemplateOption = {
   key: string;
   name: string;
   description: string;
@@ -80,11 +80,7 @@ function SortableSectionRow({
   };
 
   return (
-    <li
-      ref={setNodeRef}
-      style={style}
-      className="flex items-center justify-between gap-3 px-3 py-2.5"
-    >
+    <li ref={setNodeRef} style={style} className="flex items-center justify-between gap-3 px-3 py-2.5">
       <div className="flex min-w-0 items-center gap-2">
         <button
           type="button"
@@ -130,13 +126,88 @@ function SortableSectionRow({
   );
 }
 
+/** Miniatura del navegador con un HTML distinto según la plantilla. */
+function TemplatePreview({ template }: { template: AppearanceTemplateOption }) {
+  const t = template.tokens;
+  const isModern = template.key === 'modern';
+  const isBoutique = template.key === 'boutique';
+
+  return (
+    <div
+      className="relative aspect-[4/3] w-full overflow-hidden border-b border-slate-200"
+      style={{ backgroundColor: t.background }}
+    >
+      <div className="flex items-center gap-1.5 border-b border-black/5 px-3 py-2">
+        <span className="size-2 rounded-full bg-red-400/80" />
+        <span className="size-2 rounded-full bg-amber-400/80" />
+        <span className="size-2 rounded-full bg-emerald-400/80" />
+      </div>
+
+      {isModern ? (
+        <div className="space-y-2 p-3">
+          <div className="h-1 w-full rounded-full" style={{ backgroundColor: t.primary }} />
+          <div className="flex items-center justify-between gap-2 pt-1">
+            <div className="h-2 w-10 rounded-sm" style={{ backgroundColor: t.primary }} />
+            <div className="h-3 flex-1 rounded-full border border-black/10" />
+            <div className="h-2.5 w-8 rounded-full" style={{ backgroundColor: t.primary }} />
+          </div>
+          <div className="grid grid-cols-4 gap-1 pt-1">
+            {[0, 1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="aspect-square rounded-sm"
+                style={{ backgroundColor: i === 1 ? t.accent : t.muted ?? '#f3f4f6' }}
+              />
+            ))}
+          </div>
+        </div>
+      ) : isBoutique ? (
+        <div className="space-y-2 p-3 text-center">
+          <div className="mx-auto h-2.5 w-24 rounded-sm" style={{ backgroundColor: t.primary }} />
+          <div
+            className="mx-auto h-1 w-16 rounded-full"
+            style={{ backgroundColor: t.accent, opacity: 0.5 }}
+          />
+          <div className="mx-auto aspect-[3/1] w-full rounded-sm" style={{ backgroundColor: t.muted ?? '#f5efe6' }} />
+          <div className="grid grid-cols-2 gap-1">
+            {[0, 1].map((i) => (
+              <div key={i} className="aspect-square rounded-sm" style={{ backgroundColor: t.muted ?? '#f5efe6' }} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-2 p-3">
+          <div className="flex items-center justify-between">
+            <div className="h-2.5 w-20 rounded-sm" style={{ backgroundColor: t.primary }} />
+            <div className="h-2.5 w-10 rounded-full border border-black/10" />
+          </div>
+          <div className="aspect-[3/1] w-full rounded-sm" style={{ backgroundColor: t.muted ?? '#f3f4f6' }} />
+          <div className="grid grid-cols-3 gap-1">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="aspect-square rounded-sm"
+                style={{ backgroundColor: i === 1 ? t.accent : t.muted ?? '#f3f4f6' }}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function AppearanceForm({
   storeSlug,
+  templates,
+  initialTemplateKey,
   initialColors,
   sections,
   readOnly,
 }: {
   storeSlug: string;
+  templates: AppearanceTemplateOption[];
+  initialTemplateKey: string;
   initialColors: {
     primary: string;
     accent: string;
@@ -148,10 +219,20 @@ export function AppearanceForm({
   readOnly: boolean;
 }) {
   const [state, formAction, pending] = useActionState(updateAppearanceAction, initialState);
+  const [templateKey, setTemplateKey] = useState(initialTemplateKey);
   const [colors, setColors] = useState(initialColors);
   const [list, setList] = useState(sections);
 
-  const themeKey = 'minimal';
+  function selectTemplate(template: AppearanceTemplateOption) {
+    setTemplateKey(template.key);
+    setColors({
+      primary: template.tokens.primary,
+      accent: template.tokens.accent,
+      background: template.tokens.background,
+      foreground: template.tokens.foreground,
+      radius: template.tokens.radius,
+    });
+  }
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -182,8 +263,10 @@ export function AppearanceForm({
     setList(next);
   }
 
+  // El nombre del campo sigue siendo `themeKey` en la BD (no cambiamos esquemas),
+  // pero en la UI se presenta como "plantilla de página web".
   const payload = {
-    themeKey,
+    themeKey: templateKey,
     primary: colors.primary,
     accent: colors.accent,
     background: colors.background,
@@ -200,15 +283,61 @@ export function AppearanceForm({
     <form action={formAction} className="space-y-5">
       <input type="hidden" name="slug" value={storeSlug} />
       <input type="hidden" name="payload" value={JSON.stringify(payload)} />
-      <input type="hidden" name="themeKey" value="minimal" />
 
       <fieldset disabled={readOnly} className="space-y-5">
         <section className="rounded-xl border border-border bg-card p-5">
-          <h2 className="text-sm font-semibold">Tema</h2>
+          <h2 className="text-sm font-semibold">Plantilla de página web</h2>
           <p className="mt-1 text-xs text-muted-foreground">
-            El tema está fijado a “Minimal” para mantener un diseño consistente. Puedes ajustar los
-            colores y secciones debajo.
+            Elige la estructura y el estilo de tu tienda pública. Solo afecta a /tienda/{storeSlug};
+            el panel de administración mantiene siempre el diseño de mikarpa.
           </p>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {templates.map((template) => {
+              const selected = template.key === templateKey;
+              return (
+                <button
+                  key={template.key}
+                  type="button"
+                  onClick={() => selectTemplate(template)}
+                  aria-pressed={selected}
+                  className={`group relative overflow-hidden rounded-2xl border bg-white text-left transition-all duration-200 ${
+                    selected
+                      ? 'border-transparent ring-2 ring-blue-600 shadow-xl shadow-blue-500/10'
+                      : 'border-slate-200 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/5'
+                  }`}
+                >
+                  {selected ? (
+                    <span className="absolute top-3 right-3 z-10 inline-flex items-center gap-1 rounded-full bg-blue-600 px-2.5 py-1 text-[11px] font-semibold text-white shadow-md">
+                      <Check className="size-3" aria-hidden />
+                      Activa
+                    </span>
+                  ) : null}
+
+                  <TemplatePreview template={template} />
+
+                  <div className="space-y-1 p-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="text-sm font-semibold text-slate-900">{template.name}</h3>
+                      <div className="flex gap-1">
+                        {[template.tokens.primary, template.tokens.accent, template.tokens.background].map(
+                          (color) => (
+                            <span
+                              key={color}
+                              className="size-3 rounded-full border border-black/10"
+                              style={{ backgroundColor: color }}
+                              aria-hidden
+                            />
+                          ),
+                        )}
+                      </div>
+                    </div>
+                    <p className="line-clamp-2 text-xs text-slate-500">{template.description}</p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </section>
 
         <section className="rounded-xl border border-border bg-card p-5">
@@ -216,6 +345,9 @@ export function AppearanceForm({
             <Palette className="size-4 text-muted-foreground" aria-hidden />
             <h2 className="text-sm font-semibold">Colores y bordes</h2>
           </div>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Ajustes finos de la plantilla elegida. También solo afectan a la tienda pública.
+          </p>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {(
