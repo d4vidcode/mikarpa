@@ -5,6 +5,8 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+export const instant = false;
+
 export default function PublicLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
