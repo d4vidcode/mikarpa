@@ -37,7 +37,7 @@ export function ProductCard({
     >
       <Link
         href={`/tienda/${storeSlug}/producto/${product.id}`}
-        className="flex h-full flex-col overflow-hidden rounded-[var(--store-radius)] border border-border/50 bg-card shadow-sm transition-all duration-200 hover:shadow-md"
+        className="flex h-full flex-col overflow-hidden rounded-[var(--store-radius)] border border-[var(--store-fg)]/10 bg-[var(--store-bg)] shadow-sm transition-all duration-200 hover:shadow-md"
       >
         <div className="relative aspect-square overflow-hidden bg-muted">
           {imageSrc ? (
