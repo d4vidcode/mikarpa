@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { requireStoreAccess } from '@/lib/tenant';
-import { getTheme, listThemes } from '@/themes/registry';
+import { getTheme } from '@/themes/registry';
 import { flattenThemeTokens } from '@/lib/theme-tokens';
 import { getSectionDefinition } from '@/themes/sections/registry';
 import { AppearanceForm } from '@/components/admin/appearance-form';
@@ -14,8 +14,7 @@ export default async function AppearancePage({ params }: { params: Promise<{ slu
   const access = await requireStoreAccess(slug, 'appearance');
   const store = access.store;
 
-  const currentThemeKey = store.theme?.themeKey ?? 'minimal';
-  const theme = getTheme(currentThemeKey);
+  const theme = getTheme('minimal');
   const overrides = flattenThemeTokens(store.theme?.tokens);
 
   const colors = {
@@ -25,21 +24,6 @@ export default async function AppearancePage({ params }: { params: Promise<{ slu
     foreground: overrides.foreground ?? theme.tokens.foreground ?? '#111827',
     radius: overrides.radius ?? theme.tokens.radius ?? '0.5rem',
   };
-
-  const themes = listThemes().map((item) => ({
-    key: item.key,
-    name: item.name,
-    description: item.description,
-    tokens: {
-      primary: item.tokens.primary ?? '#111827',
-      accent: item.tokens.accent ?? '#2563eb',
-      background: item.tokens.background ?? '#ffffff',
-      foreground: item.tokens.foreground ?? '#111827',
-      radius: item.tokens.radius ?? '0.5rem',
-      secondary: item.tokens.secondary ?? '#6b7280',
-      muted: item.tokens.muted ?? '#f3f4f6',
-    },
-  }));
 
   // Se listan las secciones guardadas + las del tema actual que aún no existan.
   const sections = [...(store.sections ?? [])].map((section) => ({
@@ -75,8 +59,6 @@ export default async function AppearancePage({ params }: { params: Promise<{ slu
 
       <AppearanceForm
         storeSlug={slug}
-        themes={themes}
-        initialThemeKey={currentThemeKey}
         initialColors={colors}
         sections={sections}
         readOnly={access.readOnly}

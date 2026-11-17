@@ -17,7 +17,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ArrowDown, ArrowUp, Check, GripVertical, Loader2, Palette } from 'lucide-react';
+import { ArrowDown, ArrowUp, GripVertical, Loader2, Palette } from 'lucide-react';
 import { updateAppearanceAction, type StoreFormState } from '@/lib/actions/stores';
 import { Button } from '@/components/ui/button';
 
@@ -132,15 +132,11 @@ function SortableSectionRow({
 
 export function AppearanceForm({
   storeSlug,
-  themes,
-  initialThemeKey,
   initialColors,
   sections,
   readOnly,
 }: {
   storeSlug: string;
-  themes: AppearanceThemeOption[];
-  initialThemeKey: string;
   initialColors: {
     primary: string;
     accent: string;
@@ -152,9 +148,10 @@ export function AppearanceForm({
   readOnly: boolean;
 }) {
   const [state, formAction, pending] = useActionState(updateAppearanceAction, initialState);
-  const [themeKey, setThemeKey] = useState(initialThemeKey);
   const [colors, setColors] = useState(initialColors);
   const [list, setList] = useState(sections);
+
+  const themeKey = 'minimal';
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -172,17 +169,6 @@ export function AppearanceForm({
         return items;
       }
       return arrayMove(items, oldIndex, newIndex);
-    });
-  }
-
-  function selectTheme(theme: AppearanceThemeOption) {
-    setThemeKey(theme.key);
-    setColors({
-      primary: theme.tokens.primary,
-      accent: theme.tokens.accent,
-      background: theme.tokens.background,
-      foreground: theme.tokens.foreground,
-      radius: theme.tokens.radius,
     });
   }
 
@@ -214,135 +200,15 @@ export function AppearanceForm({
     <form action={formAction} className="space-y-5">
       <input type="hidden" name="slug" value={storeSlug} />
       <input type="hidden" name="payload" value={JSON.stringify(payload)} />
+      <input type="hidden" name="themeKey" value="minimal" />
 
       <fieldset disabled={readOnly} className="space-y-5">
         <section className="rounded-xl border border-border bg-card p-5">
           <h2 className="text-sm font-semibold">Tema</h2>
           <p className="mt-1 text-xs text-muted-foreground">
-            El tema define la estructura visual. Los colores se pueden afinar debajo.
+            El tema está fijado a “Minimal” para mantener un diseño consistente. Puedes ajustar los
+            colores y secciones debajo.
           </p>
-
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {themes.map((theme) => {
-              const selected = theme.key === themeKey;
-              return (
-                <button
-                  key={theme.key}
-                  type="button"
-                  onClick={() => selectTheme(theme)}
-                  aria-pressed={selected}
-                  className={`group relative overflow-hidden rounded-2xl border bg-white text-left transition-all duration-200 ${
-                    selected
-                      ? 'border-transparent ring-2 ring-blue-600 shadow-xl shadow-blue-500/10'
-                      : 'border-slate-200 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/5'
-                  }`}
-                >
-                  {selected ? (
-                    <span className="absolute top-3 right-3 z-10 inline-flex items-center gap-1 rounded-full bg-blue-600 px-2.5 py-1 text-[11px] font-semibold text-white shadow-md">
-                      <Check className="size-3" aria-hidden />
-                      Activo
-                    </span>
-                  ) : null}
-
-                  {/* Mini browser mockup */}
-                  <div
-                    className="relative aspect-[4/3] w-full overflow-hidden border-b border-slate-100"
-                    style={{ backgroundColor: theme.tokens.background }}
-                  >
-                    <div className="flex items-center gap-1.5 border-b border-black/5 px-3 py-2">
-                      <span className="size-2 rounded-full bg-red-400/80" />
-                      <span className="size-2 rounded-full bg-amber-400/80" />
-                      <span className="size-2 rounded-full bg-emerald-400/80" />
-                      <span
-                        className="ml-2 h-2 flex-1 rounded-full"
-                        style={{ backgroundColor: theme.tokens.muted }}
-                      />
-                    </div>
-
-                    {/* Hero */}
-                    <div
-                      className="px-3 py-2.5"
-                      style={{ backgroundColor: theme.tokens.muted, opacity: 0.5 }}
-                    >
-                      <div
-                        className="h-2.5 w-2/3 rounded-full"
-                        style={{ backgroundColor: theme.tokens.primary }}
-                      />
-                      <div
-                        className="mt-1.5 h-1.5 w-1/2 rounded-full"
-                        style={{ backgroundColor: theme.tokens.foreground, opacity: 0.5 }}
-                      />
-                    </div>
-
-                    {/* Product grid */}
-                    <div className="grid grid-cols-3 gap-1.5 p-3">
-                      {[0, 1, 2].map((index) => (
-                        <div
-                          key={index}
-                          className="overflow-hidden rounded-md"
-                          style={{ backgroundColor: theme.tokens.muted }}
-                        >
-                          <div
-                            className="aspect-square"
-                            style={{
-                              backgroundColor:
-                                index === 1 ? theme.tokens.accent : theme.tokens.primary,
-                              opacity: index === 1 ? 0.85 : 0.25,
-                            }}
-                          />
-                          <div className="space-y-1 p-1.5">
-                            <div
-                              className="h-1.5 w-full rounded-full"
-                              style={{ backgroundColor: theme.tokens.foreground, opacity: 0.7 }}
-                            />
-                            <div
-                              className="h-1.5 w-2/3 rounded-full"
-                              style={{ backgroundColor: theme.tokens.primary }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Footer bar */}
-                    <div
-                      className="absolute inset-x-0 bottom-0 border-t border-black/5 px-3 py-1.5"
-                      style={{ backgroundColor: theme.tokens.muted, opacity: 0.4 }}
-                    >
-                      <div
-                        className="mx-auto h-1 w-1/3 rounded-full"
-                        style={{ backgroundColor: theme.tokens.foreground, opacity: 0.4 }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 p-4">
-                    <div className="flex items-center justify-between gap-2">
-                      <h3 className="text-sm font-semibold text-slate-900">{theme.name}</h3>
-                      <div className="flex gap-1">
-                        {[
-                          theme.tokens.primary,
-                          theme.tokens.accent,
-                          theme.tokens.background,
-                          theme.tokens.muted,
-                        ].map((color) => (
-                          <span
-                            key={color}
-                            className="size-3.5 rounded-full border border-black/10"
-                            style={{ backgroundColor: color }}
-                            aria-hidden
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="line-clamp-2 text-xs leading-relaxed text-slate-500">
-                      {theme.description}
-                    </p>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
         </section>
 
         <section className="rounded-xl border border-border bg-card p-5">
