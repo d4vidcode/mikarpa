@@ -5,9 +5,12 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+import { connection } from 'next/server';
+
 export const instant = false;
 
-export default function PublicLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function PublicLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  await connection();
   return (
     <>
       <SiteHeader />
