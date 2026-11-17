@@ -1,5 +1,5 @@
 import type { StoreThemeTokens } from '@/types/storefront';
-import { boutiqueTheme, minimalTheme } from './minimal';
+import { boutiqueTheme, darkTheme, minimalTheme, modernTheme, warmTheme } from './minimal';
 import type { ThemeDefinition } from './types';
 
 /**
@@ -11,6 +11,9 @@ import type { ThemeDefinition } from './types';
 export const THEMES: Record<string, ThemeDefinition> = {
   minimal: minimalTheme,
   boutique: boutiqueTheme,
+  modern: modernTheme,
+  dark: darkTheme,
+  warm: warmTheme,
 };
 
 export const DEFAULT_THEME_KEY = 'minimal';

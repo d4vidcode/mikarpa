@@ -141,6 +141,63 @@ export const minimalTheme: ThemeDefinition = {
   Shell: StoreShell,
 };
 
+export const modernTheme: ThemeDefinition = {
+  key: 'modern',
+  name: 'Modern',
+  description: 'Limpio y luminoso, con azul eléctrico y mucho espacio. Ideal para tecnología y lifestyle.',
+  tokens: {
+    primary: '#2563eb',
+    secondary: '#64748b',
+    accent: '#0ea5e9',
+    background: '#ffffff',
+    foreground: '#0f172a',
+    muted: '#f1f5f9',
+    radius: '0.75rem',
+    fontHeading: 'Inter',
+    fontBody: 'Inter',
+  },
+  defaultSections: storefrontSections,
+  Shell: StoreShell,
+};
+
+export const darkTheme: ThemeDefinition = {
+  key: 'dark',
+  name: 'Dark',
+  description: 'Oscuro y premium, con acentos neón. Para marcas con carácter y productos tech.',
+  tokens: {
+    primary: '#a78bfa',
+    secondary: '#94a3b8',
+    accent: '#22d3ee',
+    background: '#0f172a',
+    foreground: '#f8fafc',
+    muted: '#1e293b',
+    radius: '0.5rem',
+    fontHeading: 'Inter',
+    fontBody: 'Inter',
+  },
+  defaultSections: storefrontSections,
+  Shell: StoreShell,
+};
+
+export const warmTheme: ThemeDefinition = {
+  key: 'warm',
+  name: 'Warm',
+  description: 'Cálido y cercano, con tonos tierra y serif. Para artesanía, comida y hogar.',
+  tokens: {
+    primary: '#b45309',
+    secondary: '#78716c',
+    accent: '#dc2626',
+    background: '#fef7ed',
+    foreground: '#292524',
+    muted: '#fde68a',
+    radius: '1rem',
+    fontHeading: 'Fraunces',
+    fontBody: 'Inter',
+  },
+  defaultSections: storefrontSections,
+  Shell: StoreShell,
+};
+
 export const boutiqueTheme: ThemeDefinition = {
   key: 'boutique',
   name: 'Boutique',
