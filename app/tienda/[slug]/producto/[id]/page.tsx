@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { ChevronRight, Truck } from 'lucide-react';
 import { getCachedStore, getCachedProduct, getCachedRelatedProducts, getCachedCategories } from '@/lib/cache/store';
 import { toPublicProduct, toPublicStore, effectiveStock } from '@/lib/storefront';
-import { ProductCard } from '@/themes/sections/components';
+import { ProductCard } from '@/components/storefront/product-card';
 import { AddToCartForm } from '@/components/storefront/add-to-cart';
 import { ProductGallery } from '@/components/storefront/product-gallery';
 

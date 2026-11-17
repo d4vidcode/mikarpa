@@ -10,7 +10,7 @@ import {
 } from '@/lib/storefront';
 import { getTheme } from '@/themes/registry';
 import { getSectionDefinition } from '@/themes/sections/registry';
-import { ProductCard } from '@/themes/sections/components';
+import { ProductCard } from '@/components/storefront/product-card';
 import type { StoreSectionDto } from '@/types/storefront';
 
 export default async function StorefrontPage({
