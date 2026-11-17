@@ -67,6 +67,10 @@ export default async function AppearancePage({ params }: { params: Promise<{ slu
         <p className="mt-1 text-sm text-muted-foreground">
           Cambia el tema, los colores y las secciones de tu tienda.
         </p>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Estos cambios solo afectan la vista pública (/tienda/{slug}). El panel de administración
+          mantiene el diseño de mikarpa.
+        </p>
       </div>
 
       <AppearanceForm
