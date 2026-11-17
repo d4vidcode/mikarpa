@@ -226,6 +226,8 @@ const storeSchema = new Schema(
 
 /** Directorio /explorar: tiendas activas por rubro, más nuevas primero. */
 storeSchema.index({ status: 1, category: 1, createdAt: -1 });
+storeSchema.index({ status: 1, deletedAt: 1, createdAt: -1 });
+storeSchema.index({ status: 1, deletedAt: 1, category: 1, createdAt: -1 });
 /** Panel del owner: "mis tiendas". */
 storeSchema.index({ ownerId: 1, status: 1 });
 /** Búsqueda por nombre en /explorar (MVP). */
