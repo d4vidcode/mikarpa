@@ -2,48 +2,135 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+  mikarpa · sistema visual único (taste-skill / dealt "familjen")
+  - Paleta de marca repartida con start.mjs brand: azul sobre claro.
+  - Familjen Grotesk + IBM Plex Mono.
+  - Radio soft, escala 4/8, un botón, una tarjeta, un hairline, un foco.
+  - Movimiento: entrada del hero, hover 2px, press 1px/1.5%, reduced-motion.
+  - Sin revelados al hacer scroll.
+*/
 :root {
-  --radius: 0.625rem;
+  color-scheme: light;
 
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  /* Paleta repartida */
+  --p-bg: #f7f8fa;
+  --p-surface: #eceff4;
+  --p-ink: #10131a;
+  --p-muted: #4b4f57;
+  --p-accent: #2563eb;
+  --p-accent-ink: #ffffff;
+  --p-action: #2563eb;
+  --p-action-ink: #ffffff;
+
+  --p-inv-bg: #10131a;
+  --p-inv-surface: #1d2027;
+  --p-inv-ink: #f7f8fa;
+  --p-inv-muted: #a8abb0;
+  --p-inv-accent: #60a5fa;
+  --p-inv-accent-ink: #10131a;
+  --p-inv-action: #60a5fa;
+  --p-inv-action-ink: #10131a;
+
+  /* Ground (nombres propios, sin colisión con los tokens shadcn) */
+  --ground: var(--p-bg);
+  --surface: var(--p-surface);
+  --ink: var(--p-ink);
+  --subtle: var(--p-muted);
+  --brand: var(--p-accent);
+  --brand-ink: var(--p-accent-ink);
+  --line: color-mix(in oklab, var(--ink) 11%, transparent);
+  --line-strong: color-mix(in oklab, var(--ink) 20%, transparent);
+
+  /* Espaciado 4/8 — la única escala */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+
+  /* Tipografía — la única escala */
+  --t-label: 13px;
+  --t-small: 14px;
+  --t-body: 16px;
+  --t-lead: 18px;
+  --t-h3: 24px;
+  --t-h2: clamp(30px, 1.72vw + 23.3px, 48px);
+  --t-h1: clamp(38px, 3.24vw + 25.4px, 72px);
+  --display-weight: 500;
+  --display-tracking: -0.035em;
+
+  /* Radio soft — una sola familia */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-btn: 8px;
+  --radius: 12px;
+
+  /* Movimiento — los únicos números */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+  --m-in: 150ms;
+  --m-out: 120ms;
+  --m-press: 90ms;
+  --m-image: 600ms;
+
+  /* Tokens de la app (shadcn/Tailwind) apuntando al sistema único */
+  --background: var(--p-bg);
+  --foreground: var(--p-ink);
+  --card: #ffffff;
+  --card-foreground: var(--p-ink);
+  --popover: #ffffff;
+  --popover-foreground: var(--p-ink);
+  --primary: var(--p-action);
+  --primary-foreground: var(--p-action-ink);
+  --secondary: var(--p-surface);
+  --secondary-foreground: var(--p-ink);
+  --muted: var(--p-surface);
+  --muted-foreground: var(--p-muted);
+  --accent: var(--p-surface);
+  --accent-foreground: var(--p-ink);
+  --destructive: #c62828;
+  --border: var(--line);
+  --input: var(--line-strong);
+  --ring: var(--p-action);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  color-scheme: dark;
+
+  --ground: var(--p-inv-bg);
+  --surface: var(--p-inv-surface);
+  --ink: var(--p-inv-ink);
+  --subtle: var(--p-inv-muted);
+  --brand: var(--p-inv-accent);
+  --brand-ink: var(--p-inv-accent-ink);
+  --line: color-mix(in oklab, var(--p-inv-ink) 14%, transparent);
+  --line-strong: color-mix(in oklab, var(--p-inv-ink) 22%, transparent);
+
+  --background: var(--p-inv-bg);
+  --foreground: var(--p-inv-ink);
+  --card: var(--p-inv-surface);
+  --card-foreground: var(--p-inv-ink);
+  --popover: var(--p-inv-surface);
+  --popover-foreground: var(--p-inv-ink);
+  --primary: var(--p-inv-action);
+  --primary-foreground: var(--p-inv-action-ink);
+  --secondary: var(--p-inv-surface);
+  --secondary-foreground: var(--p-inv-ink);
+  --muted: var(--p-inv-surface);
+  --muted-foreground: var(--p-inv-muted);
+  --accent: var(--p-inv-surface);
+  --accent-foreground: var(--p-inv-ink);
+  --destructive: #ef6a6a;
+  --border: var(--line);
+  --input: var(--line-strong);
+  --ring: var(--p-inv-action);
 }
 
 @theme inline {
@@ -66,30 +153,213 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  /* Utilidades del sistema único */
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-ink: var(--ink);
 
-  --font-sans: var(--font-inter, ui-sans-serif, system-ui, sans-serif);
-  --font-serif: var(--font-fraunces, ui-serif, Georgia, serif);
-  --font-display: var(--font-fraunces, ui-serif, Georgia, serif);
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-lg);
+  --radius-2xl: var(--r-lg);
+  --radius-3xl: var(--r-lg);
+
+  --font-sans: var(--font-grotesk, 'Familjen Grotesk', system-ui, sans-serif);
+  --font-serif: var(--font-grotesk, 'Familjen Grotesk', system-ui, sans-serif);
+  --font-display: var(--font-grotesk, 'Familjen Grotesk', system-ui, sans-serif);
+  --font-mono: var(--font-plex-mono, 'IBM Plex Mono', ui-monospace, monospace);
+}
+
+/* Un solo foco. Sin capa: gana sobre el `outline-none` de la capa de utilidades. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
 
   html {
     scroll-behavior: smooth;
   }
 
+  html,
   body {
-    @apply bg-background text-foreground;
+    margin: 0;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    letter-spacing: var(--display-tracking);
+    text-wrap: balance;
   }
 
   ::selection {
-    @apply bg-primary text-primary-foreground;
+    background: color-mix(in oklab, var(--brand) 22%, transparent);
+    color: var(--ink);
+  }
+
+  /* Un solo botón: transición, step en hover, press en click */
+  [data-slot='button'] {
+    transition:
+      background-color var(--m-out) var(--ease),
+      color var(--m-out) var(--ease),
+      border-color var(--m-out) var(--ease),
+      box-shadow var(--m-out) var(--ease),
+      transform var(--m-press) var(--ease);
+  }
+
+  [data-slot='button']:not(:disabled):active {
+    transform: translateY(1px) scale(0.985);
+  }
+
+  /* Enlaces de texto: una sola regla */
+  a {
+    text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
+    text-underline-offset: 3px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  [data-slot='button']:not(:disabled):hover {
+    transform: translateY(-1px);
+  }
+
+  [data-slot='button'][data-size='lg']:not(:disabled):hover {
+    transform: translateY(-2px);
+  }
+
+  /* Tarjetas enlazadas: 2px arriba, como en el sistema repartido */
+  .dealt-card {
+    transition:
+      transform var(--m-in) var(--ease),
+      box-shadow var(--m-in) var(--ease),
+      border-color var(--m-in) var(--ease);
+  }
+
+  .dealt-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px -16px color-mix(in oklab, var(--ink) 28%, transparent);
+    border-color: var(--line-strong);
+  }
+}
+
+.dealt-card:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* Fotografías enlazadas: zoom 1.03 dentro de su máscara */
+.dealt-zoom img,
+.dealt-zoom > img {
+  transition: transform var(--m-image) var(--ease);
+}
+
+.dealt-zoom:hover img,
+.dealt-zoom:hover > img {
+  transform: scale(1.03);
+}
+
+/* ---------------------------------------------------------------- momentos */
+
+/* Entrada del hero: una sola vez, sin scroll */
+@keyframes dealt-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.dealt-enter {
+  animation: dealt-enter 0.7s var(--ease-enter) both;
+}
+
+.dealt-enter--delay {
+  animation-delay: 0.12s;
+}
+
+/* Momento 1 · liquid-type: el titular se ondula al pasar el puntero */
+@keyframes dealt-liquid {
+  0%,
+  100% {
+    transform: none;
+  }
+  35% {
+    transform: scaleX(1.025) skewX(-1deg);
+  }
+  65% {
+    transform: scaleX(0.995) skewX(0.5deg);
+  }
+}
+
+.dealt-liquid:hover {
+  filter: url(#dealt-liquid);
+  animation: dealt-liquid 0.9s var(--ease);
+}
+
+/* Momento 2 · letters-assemble: las letras se ordenan al cargar */
+@keyframes dealt-letter {
+  from {
+    opacity: 0;
+    transform: translateY(28px) rotate(-7deg) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.dealt-letter {
+  display: inline-block;
+  animation: dealt-letter 0.72s var(--ease-enter) both;
+  animation-delay: calc(var(--i, 0) * 42ms);
+}
+
+/* Reduced motion: el color cambia, nada se mueve ni hace zoom */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-slot='button']:not(:disabled):hover,
+  [data-slot='button']:not(:disabled):active,
+  .dealt-card:hover,
+  .dealt-card:active,
+  .dealt-zoom:hover img,
+  .dealt-zoom:hover > img {
+    transform: none !important;
+  }
+
+  .dealt-liquid:hover {
+    filter: none !important;
   }
 }

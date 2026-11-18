@@ -4,6 +4,20 @@ import type { StoreThemeTokens } from '@/types/storefront';
 import type { ThemeDefaultSection, ThemeDefinition } from '../types';
 import { CartIndicator } from '@/components/storefront/cart-indicator';
 
+/* Las fuentes guardadas antes del rediseño se resuelven al sistema único,
+   sin romper los overrides que el dueño de la tienda haya elegido. */
+const FONT_STACKS: Record<string, string> = {
+  Inter: 'var(--font-grotesk), system-ui, sans-serif',
+  Fraunces: 'var(--font-grotesk), system-ui, sans-serif',
+  'Familjen Grotesk': 'var(--font-grotesk), system-ui, sans-serif',
+  'IBM Plex Mono': 'var(--font-plex-mono), ui-monospace, monospace',
+};
+
+function fontStack(value: string | null | undefined): string | undefined {
+  if (!value) return undefined;
+  return FONT_STACKS[value] ?? value;
+}
+
 function styleFromTokens(tokens: StoreThemeTokens): React.CSSProperties {
   return {
     '--store-primary': tokens.primary ?? '#111827',
@@ -11,8 +25,10 @@ function styleFromTokens(tokens: StoreThemeTokens): React.CSSProperties {
     '--store-bg': tokens.background ?? '#ffffff',
     '--store-fg': tokens.foreground ?? '#111827',
     '--store-muted': tokens.muted ?? '#f3f4f6',
-    '--store-radius': tokens.radius ?? '0.5rem',
-    fontFamily: tokens.fontBody ?? undefined,
+    '--store-radius': tokens.radius ?? '12px',
+    '--store-font-heading': fontStack(tokens.fontHeading) ?? 'var(--font-grotesk), system-ui, sans-serif',
+    '--store-font-body': fontStack(tokens.fontBody) ?? 'var(--font-grotesk), system-ui, sans-serif',
+    fontFamily: fontStack(tokens.fontBody) ?? 'var(--font-grotesk), system-ui, sans-serif',
   } as React.CSSProperties;
 }
 
@@ -131,11 +147,11 @@ function BoutiqueShell({ store, children }: ShellProps) {
                 className="size-11 rounded-full object-cover"
               />
             ) : (
-              <span className="flex size-11 items-center justify-center rounded-full bg-[var(--store-primary)] font-serif text-lg text-white">
+              <span className="flex size-11 items-center justify-center rounded-full bg-[var(--store-primary)] font-display text-lg text-white">
                 {store.name.slice(0, 1)}
               </span>
             )}
-            <span className="font-serif text-2xl tracking-tight">{store.name}</span>
+            <span className="font-display text-2xl tracking-tight">{store.name}</span>
           </Link>
 
           <nav className="flex items-center justify-center gap-6 text-sm">
@@ -236,9 +252,9 @@ export const minimalTheme: ThemeDefinition = {
     background: '#ffffff',
     foreground: '#111827',
     muted: '#f3f4f6',
-    radius: '0.5rem',
-    fontHeading: 'Inter',
-    fontBody: 'Inter',
+    radius: '12px',
+    fontHeading: 'Familjen Grotesk',
+    fontBody: 'Familjen Grotesk',
   },
   defaultSections: storefrontSections,
   Shell: StoreShell,
@@ -255,9 +271,9 @@ export const modernTheme: ThemeDefinition = {
     background: '#ffffff',
     foreground: '#0f172a',
     muted: '#f1f5f9',
-    radius: '0.75rem',
-    fontHeading: 'Inter',
-    fontBody: 'Inter',
+    radius: '12px',
+    fontHeading: 'Familjen Grotesk',
+    fontBody: 'Familjen Grotesk',
   },
   defaultSections: storefrontSections,
   Shell: ModernShell,
@@ -274,9 +290,9 @@ export const boutiqueTheme: ThemeDefinition = {
     background: '#fffbf5',
     foreground: '#292524',
     muted: '#f5efe6',
-    radius: '1rem',
-    fontHeading: 'Fraunces',
-    fontBody: 'Inter',
+    radius: '20px',
+    fontHeading: 'Familjen Grotesk',
+    fontBody: 'Familjen Grotesk',
   },
   defaultSections: storefrontSections.map((section) => {
     if (section.key === 'hero') {
@@ -305,15 +321,15 @@ export const darkTheme: ThemeDefinition = {
   name: 'Oscura',
   description: 'Variante oscura de la plantilla por defecto, con acentos vivos.',
   tokens: {
-    primary: '#a78bfa',
+    primary: '#60a5fa',
     secondary: '#94a3b8',
-    accent: '#22d3ee',
-    background: '#0f172a',
-    foreground: '#f8fafc',
-    muted: '#1e293b',
-    radius: '0.5rem',
-    fontHeading: 'Inter',
-    fontBody: 'Inter',
+    accent: '#38bdf8',
+    background: '#10131a',
+    foreground: '#f7f8fa',
+    muted: '#1d2027',
+    radius: '12px',
+    fontHeading: 'Familjen Grotesk',
+    fontBody: 'Familjen Grotesk',
   },
   defaultSections: storefrontSections,
   Shell: StoreShell,
@@ -330,9 +346,9 @@ export const warmTheme: ThemeDefinition = {
     background: '#fef7ed',
     foreground: '#292524',
     muted: '#fde68a',
-    radius: '1rem',
-    fontHeading: 'Fraunces',
-    fontBody: 'Inter',
+    radius: '20px',
+    fontHeading: 'Familjen Grotesk',
+    fontBody: 'Familjen Grotesk',
   },
   defaultSections: storefrontSections,
   Shell: StoreShell,

@@ -29,7 +29,7 @@ export default async function AcceptInvitationPage({
 
   if (!membership || !membership.inviteExpiresAt || membership.inviteExpiresAt < new Date()) {
     return (
-      <main className="mx-auto w-full max-w-md px-4 py-16">
+      <main id="contenido" className="mx-auto w-full max-w-md px-4 py-16">
         <h1 className="text-2xl font-semibold tracking-tight">Invitación no válida</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           El enlace caducó o ya fue usado. Pide una nueva invitación al propietario.
@@ -46,7 +46,7 @@ export default async function AcceptInvitationPage({
 
   if (membership.invitedEmail && user.email.toLowerCase() !== membership.invitedEmail.toLowerCase()) {
     return (
-      <main className="mx-auto w-full max-w-md px-4 py-16">
+      <main id="contenido" className="mx-auto w-full max-w-md px-4 py-16">
         <h1 className="text-2xl font-semibold tracking-tight">Correo no coincide</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Esta invitación es para {membership.invitedEmail}. Inicia sesión con esa cuenta.

@@ -52,7 +52,7 @@ export default async function ExplorePage({
   const categoryName = new Map(categories.map((category) => [category.slug, category.name]));
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10">
+    <main id="contenido" className="mx-auto w-full max-w-6xl px-4 py-10">
       <div className="max-w-2xl">
         <h1 className="text-3xl font-semibold tracking-tight">Explora tiendas</h1>
         <p className="mt-2 text-muted-foreground">

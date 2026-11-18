@@ -19,7 +19,7 @@ export default async function RegisterPage() {
   }
 
   return (
-    <main className="mx-auto grid w-full max-w-5xl gap-10 px-4 py-12 lg:grid-cols-2 lg:items-center">
+    <main id="contenido" className="mx-auto grid w-full max-w-5xl gap-10 px-4 py-12 lg:grid-cols-2 lg:items-center">
       <div className="hidden lg:block">
         <h1 className="text-3xl font-semibold tracking-tight">Tu tienda en minutos</h1>
         <p className="mt-3 max-w-md text-muted-foreground">

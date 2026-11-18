@@ -26,3 +26,7 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 *.tsbuildinfo
+
+# Herramientas de agente / diseño (no son código de la app)
+.agents/
+.taste-skill/

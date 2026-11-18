@@ -13,7 +13,14 @@ const eslintConfig = defineConfig([
       ],
     },
   },
-  globalIgnores(['.next/**', 'node_modules/**', 'next-env.d.ts', 'scripts/**']),
+  globalIgnores([
+    '.next/**',
+    'node_modules/**',
+    'next-env.d.ts',
+    'scripts/**',
+    '.agents/**',
+    '.taste-skill/**',
+  ]),
 ]);
 
 export default eslintConfig;

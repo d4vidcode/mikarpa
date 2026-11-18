@@ -40,7 +40,7 @@ export default async function CreateStorePage() {
   }));
 
   return (
-    <main className="mx-auto w-full max-w-3xl px-4 py-10">
+    <main id="contenido" className="mx-auto w-full max-w-3xl px-4 py-10">
       <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground">
         <Store className="size-4" aria-hidden />
         mikarpa

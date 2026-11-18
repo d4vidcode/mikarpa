@@ -6,7 +6,7 @@ function Card({ className, ...props }: ComponentProps<'div'>) {
     <div
       data-slot="card"
       className={cn(
-        'rounded-xl border border-border bg-card text-card-foreground shadow-xs',
+        'rounded-[var(--r-lg)] border border-border bg-card text-card-foreground shadow-[0_1px_2px_color-mix(in_oklab,var(--ink)_5%,transparent)]',
         className,
       )}
       {...props}
@@ -19,7 +19,7 @@ function CardHeader({ className, ...props }: ComponentProps<'div'>) {
 }
 
 function CardTitle({ className, ...props }: ComponentProps<'h3'>) {
-  return <h3 data-slot="card-title" className={cn('text-base font-semibold', className)} {...props} />;
+  return <h3 data-slot="card-title" className={cn('text-base font-semibold tracking-tight', className)} {...props} />;
 }
 
 function CardDescription({ className, ...props }: ComponentProps<'p'>) {

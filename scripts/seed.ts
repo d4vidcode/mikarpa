@@ -135,8 +135,8 @@ const THEMES = [
         foreground: '#292524',
         muted: '#f5efe6',
       },
-      fonts: { heading: 'Fraunces', body: 'Inter' },
-      radius: '1rem',
+      fonts: { heading: 'Familjen Grotesk', body: 'Familjen Grotesk' },
+      radius: '20px',
     },
     sectionsAvailable: [...SECTIONS_AVAILABLE],
     defaultSections: [

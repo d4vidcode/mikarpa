@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatMoney } from '@/lib/money';
@@ -30,16 +29,12 @@ export function ProductCard({
     : null;
 
   return (
-    <motion.div
-      whileHover={{ y: -2, transition: { duration: 0.15 } }}
-      whileTap={{ scale: 0.98 }}
-      className="group"
-    >
+    <div className="group dealt-card">
       <Link
         href={`/tienda/${storeSlug}/producto/${product.id}`}
-        className="flex h-full flex-col overflow-hidden rounded-[var(--store-radius)] border border-[var(--store-fg)]/10 bg-[var(--store-bg)] shadow-sm transition-all duration-200 hover:shadow-md"
+        className="flex h-full flex-col overflow-hidden rounded-[var(--store-radius)] border border-[var(--store-fg)]/10 bg-[var(--store-bg)] shadow-sm"
       >
-        <div className="relative aspect-square overflow-hidden bg-muted">
+        <div className="dealt-zoom relative aspect-square overflow-hidden bg-[var(--store-muted)]">
           {imageSrc ? (
             <Image
               src={imageSrc}
@@ -47,7 +42,7 @@ export function ProductCard({
               width={600}
               height={600}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="size-full object-cover"
               loading="lazy"
             />
           ) : (
@@ -86,6 +81,6 @@ export function ProductCard({
           ) : null}
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 }
