@@ -2,6 +2,7 @@ export const instant = false;
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { connection } from 'next/server';
 import { auth } from '@/lib/auth';
 import { LoginForm } from './login-form';
 
@@ -15,6 +16,7 @@ export default async function LoginPage({
 }: {
   searchParams: Promise<{ callbackUrl?: string }>;
 }) {
+  await connection();
   const session = await auth();
   if (session?.user) {
     redirect('/panel');
