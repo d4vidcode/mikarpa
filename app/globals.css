@@ -3,28 +3,34 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
-  mikarpa · sistema visual único (taste-skill / dealt "familjen")
-  - Paleta de marca repartida con start.mjs brand: azul sobre claro.
-  - Familjen Grotesk + IBM Plex Mono.
-  - Radio soft, escala 4/8, un botón, una tarjeta, un hairline, un foco.
-  - Movimiento: entrada del hero, hover 2px, press 1px/1.5%, reduced-motion.
-  - Sin revelados al hacer scroll.
+  mikarpa · sistema visual único
+  Dirección: SaaS denso y profesional (consola de producto).
+  - Azul de marca sobre neutros fríos, hairlines visibles, radios sobrios.
+  - Familjen Grotesk + IBM Plex Mono para datos y etiquetas.
+  - Escala compacta: más información por pantalla, sin perder jerarquía.
+  - Un botón, un panel, una tabla, un foco, una capa de movimiento.
+  - Sin revelados al scroll.
 */
 :root {
   color-scheme: light;
 
-  /* Paleta repartida */
+  /* Paleta */
   --p-bg: #f7f8fa;
-  --p-surface: #eceff4;
-  --p-ink: #10131a;
+  --p-surface: #eef1f6;
+  --p-panel: #ffffff;
+  --p-ink: #0f1218;
   --p-muted: #4b4f57;
   --p-accent: #2563eb;
   --p-accent-ink: #ffffff;
   --p-action: #2563eb;
   --p-action-ink: #ffffff;
+  --p-success: #0f8a5f;
+  --p-warning: #b45309;
+  --p-danger: #c62828;
 
   --p-inv-bg: #10131a;
-  --p-inv-surface: #1d2027;
+  --p-inv-surface: #1b1f27;
+  --p-inv-panel: #171b22;
   --p-inv-ink: #f7f8fa;
   --p-inv-muted: #a8abb0;
   --p-inv-accent: #60a5fa;
@@ -32,17 +38,17 @@
   --p-inv-action: #60a5fa;
   --p-inv-action-ink: #10131a;
 
-  /* Ground (nombres propios, sin colisión con los tokens shadcn) */
+  /* Ground */
   --ground: var(--p-bg);
   --surface: var(--p-surface);
   --ink: var(--p-ink);
   --subtle: var(--p-muted);
   --brand: var(--p-accent);
   --brand-ink: var(--p-accent-ink);
-  --line: color-mix(in oklab, var(--ink) 11%, transparent);
-  --line-strong: color-mix(in oklab, var(--ink) 20%, transparent);
+  --line: color-mix(in oklab, var(--ink) 12%, transparent);
+  --line-strong: color-mix(in oklab, var(--ink) 22%, transparent);
 
-  /* Espaciado 4/8 — la única escala */
+  /* Espaciado 4/8 */
   --s-1: 4px;
   --s-2: 8px;
   --s-3: 12px;
@@ -54,38 +60,41 @@
   --s-9: 96px;
   --s-10: 128px;
 
-  /* Tipografía — la única escala */
-  --t-label: 13px;
-  --t-small: 14px;
-  --t-body: 16px;
-  --t-lead: 18px;
-  --t-h3: 24px;
-  --t-h2: clamp(30px, 1.72vw + 23.3px, 48px);
-  --t-h1: clamp(38px, 3.24vw + 25.4px, 72px);
-  --display-weight: 500;
-  --display-tracking: -0.035em;
+  /* Escala de tipos — más compacta en UI */
+  --t-micro: 10px;
+  --t-label: 11px;
+  --t-small: 12px;
+  --t-body: 13px;
+  --t-lead: 15px;
+  --t-card: 16px;
+  --t-h3: 20px;
+  --t-h2: clamp(26px, 1.6vw + 19px, 40px);
+  --t-h1: clamp(34px, 3.2vw + 22px, 58px);
+  --display-weight: 600;
+  --display-tracking: -0.03em;
 
-  /* Radio soft — una sola familia */
-  --r-sm: 8px;
-  --r-md: 12px;
-  --r-lg: 20px;
-  --r-btn: 8px;
-  --radius: 12px;
+  /* Radio — sobrio, profesional */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-btn: 6px;
+  --radius: 8px;
 
-  /* Movimiento — los únicos números */
+  /* Movimiento */
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
-  --m-in: 150ms;
-  --m-out: 120ms;
-  --m-press: 90ms;
-  --m-image: 600ms;
+  --m-in: 140ms;
+  --m-out: 110ms;
+  --m-press: 80ms;
+  --m-image: 500ms;
 
-  /* Tokens de la app (shadcn/Tailwind) apuntando al sistema único */
+  /* Tokens de la app */
   --background: var(--p-bg);
   --foreground: var(--p-ink);
-  --card: #ffffff;
+  --card: var(--p-panel);
   --card-foreground: var(--p-ink);
-  --popover: #ffffff;
+  --popover: var(--p-panel);
   --popover-foreground: var(--p-ink);
   --primary: var(--p-action);
   --primary-foreground: var(--p-action-ink);
@@ -95,7 +104,7 @@
   --muted-foreground: var(--p-muted);
   --accent: var(--p-surface);
   --accent-foreground: var(--p-ink);
-  --destructive: #c62828;
+  --destructive: var(--p-danger);
   --border: var(--line);
   --input: var(--line-strong);
   --ring: var(--p-action);
@@ -111,13 +120,13 @@
   --brand: var(--p-inv-accent);
   --brand-ink: var(--p-inv-accent-ink);
   --line: color-mix(in oklab, var(--p-inv-ink) 14%, transparent);
-  --line-strong: color-mix(in oklab, var(--p-inv-ink) 22%, transparent);
+  --line-strong: color-mix(in oklab, var(--p-inv-ink) 24%, transparent);
 
   --background: var(--p-inv-bg);
   --foreground: var(--p-inv-ink);
-  --card: var(--p-inv-surface);
+  --card: var(--p-inv-panel);
   --card-foreground: var(--p-inv-ink);
-  --popover: var(--p-inv-surface);
+  --popover: var(--p-inv-panel);
   --popover-foreground: var(--p-inv-ink);
   --primary: var(--p-inv-action);
   --primary-foreground: var(--p-inv-action-ink);
@@ -153,12 +162,36 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Utilidades del sistema único */
   --color-surface: var(--surface);
   --color-line: var(--line);
   --color-brand: var(--brand);
   --color-ink: var(--ink);
+  --color-success: var(--p-success);
+  --color-warning: var(--p-warning);
 
+  /* Remapeo de la escala Tailwind: UI densa sin tocar cada página */
+  --text-xs: 11px;
+  --text-xs--line-height: 1.45;
+  --text-sm: 12px;
+  --text-sm--line-height: 1.5;
+  --text-base: 13px;
+  --text-base--line-height: 1.55;
+  --text-lg: 15px;
+  --text-lg--line-height: 1.45;
+  --text-xl: 18px;
+  --text-xl--line-height: 1.3;
+  --text-2xl: 22px;
+  --text-2xl--line-height: 1.25;
+  --text-3xl: 28px;
+  --text-3xl--line-height: 1.2;
+  --text-4xl: 36px;
+  --text-4xl--line-height: 1.1;
+  --text-5xl: 46px;
+  --text-5xl--line-height: 1.05;
+  --text-6xl: 58px;
+  --text-6xl--line-height: 1;
+
+  --radius-xs: var(--r-xs);
   --radius-sm: var(--r-sm);
   --radius-md: var(--r-md);
   --radius-lg: var(--r-lg);
@@ -172,7 +205,7 @@
   --font-mono: var(--font-plex-mono, 'IBM Plex Mono', ui-monospace, monospace);
 }
 
-/* Un solo foco. Sin capa: gana sobre el `outline-none` de la capa de utilidades. */
+/* Un solo foco. Sin capa: gana sobre el `outline-none` de utilidades. */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -200,6 +233,7 @@ select:focus-visible,
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-sans);
+    font-size: var(--t-body);
   }
 
   h1,
@@ -213,11 +247,10 @@ select:focus-visible,
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--brand) 22%, transparent);
+    background: color-mix(in oklab, var(--brand) 20%, transparent);
     color: var(--ink);
   }
 
-  /* Un solo botón: transición, step en hover, press en click */
   [data-slot='button'] {
     transition:
       background-color var(--m-out) var(--ease),
@@ -228,13 +261,125 @@ select:focus-visible,
   }
 
   [data-slot='button']:not(:disabled):active {
-    transform: translateY(1px) scale(0.985);
+    transform: translateY(1px) scale(0.98);
   }
 
-  /* Enlaces de texto: una sola regla */
   a {
     text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
     text-underline-offset: 3px;
+  }
+}
+
+/* ----------------------------------------------------- piezas de consola */
+
+@layer components {
+  .panel {
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--card);
+    overflow: hidden;
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .panel-body {
+    padding: 14px;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: var(--t-micro);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-xs);
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted-foreground);
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: var(--t-small);
+  }
+
+  .data-table th {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in oklab, var(--surface) 60%, transparent);
+    font-family: var(--font-mono);
+    font-size: var(--t-micro);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    white-space: nowrap;
+  }
+
+  .data-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .data-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .data-table tbody tr {
+    transition: background-color var(--m-out) var(--ease);
+  }
+
+  .data-table tbody tr:hover {
+    background: color-mix(in oklab, var(--surface) 65%, transparent);
+  }
+
+  .crumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: var(--t-small);
+    color: var(--muted-foreground);
+  }
+
+  .crumb [aria-current='page'] {
+    color: var(--foreground);
+    font-weight: 500;
   }
 }
 
@@ -247,7 +392,6 @@ select:focus-visible,
     transform: translateY(-2px);
   }
 
-  /* Tarjetas enlazadas: 2px arriba, como en el sistema repartido */
   .dealt-card {
     transition:
       transform var(--m-in) var(--ease),
@@ -257,7 +401,7 @@ select:focus-visible,
 
   .dealt-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 14px 32px -16px color-mix(in oklab, var(--ink) 28%, transparent);
+    box-shadow: 0 12px 28px -18px color-mix(in oklab, var(--ink) 32%, transparent);
     border-color: var(--line-strong);
   }
 }
@@ -266,7 +410,6 @@ select:focus-visible,
   transform: translateY(0) scale(0.99);
 }
 
-/* Fotografías enlazadas: zoom 1.03 dentro de su máscara */
 .dealt-zoom img,
 .dealt-zoom > img {
   transition: transform var(--m-image) var(--ease);
@@ -279,11 +422,10 @@ select:focus-visible,
 
 /* ---------------------------------------------------------------- momentos */
 
-/* Entrada del hero: una sola vez, sin scroll */
 @keyframes dealt-enter {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -292,37 +434,35 @@ select:focus-visible,
 }
 
 .dealt-enter {
-  animation: dealt-enter 0.7s var(--ease-enter) both;
+  animation: dealt-enter 0.6s var(--ease-enter) both;
 }
 
 .dealt-enter--delay {
-  animation-delay: 0.12s;
+  animation-delay: 0.1s;
 }
 
-/* Momento 1 · liquid-type: el titular se ondula al pasar el puntero */
 @keyframes dealt-liquid {
   0%,
   100% {
     transform: none;
   }
   35% {
-    transform: scaleX(1.025) skewX(-1deg);
+    transform: scaleX(1.02) skewX(-0.8deg);
   }
   65% {
-    transform: scaleX(0.995) skewX(0.5deg);
+    transform: scaleX(0.996) skewX(0.4deg);
   }
 }
 
 .dealt-liquid:hover {
   filter: url(#dealt-liquid);
-  animation: dealt-liquid 0.9s var(--ease);
+  animation: dealt-liquid 0.85s var(--ease);
 }
 
-/* Momento 2 · letters-assemble: las letras se ordenan al cargar */
 @keyframes dealt-letter {
   from {
     opacity: 0;
-    transform: translateY(28px) rotate(-7deg) scale(0.96);
+    transform: translateY(24px) rotate(-6deg) scale(0.96);
   }
   to {
     opacity: 1;
@@ -332,11 +472,24 @@ select:focus-visible,
 
 .dealt-letter {
   display: inline-block;
-  animation: dealt-letter 0.72s var(--ease-enter) both;
-  animation-delay: calc(var(--i, 0) * 42ms);
+  animation: dealt-letter 0.65s var(--ease-enter) both;
+  animation-delay: calc(var(--i, 0) * 38ms);
 }
 
-/* Reduced motion: el color cambia, nada se mueve ni hace zoom */
+@keyframes dealt-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.dealt-pulse {
+  animation: dealt-pulse 2.8s var(--ease) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

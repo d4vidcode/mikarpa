@@ -2,11 +2,11 @@ import Link from 'next/link';
 import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import { connectDB } from '@/lib/db';
 import { Store as StoreModel } from '@/models';
-import { ExternalLink, Eye, LogOut, Store } from 'lucide-react';
-import { logoutAction } from '@/lib/actions/auth';
+import { ExternalLink, Eye, Store } from 'lucide-react';
 import { STORE_ADMIN_NAV } from '@/lib/permissions';
 import { can, getSessionUser, getStoreAccess, getStoreBySlug } from '@/lib/tenant';
-import { AdminNav } from '@/components/layout/admin-nav';
+import { ConsoleShell } from '@/components/layout/console-shell';
+import type { AdminNavItem } from '@/components/layout/admin-nav';
 
 export default async function StoreAdminLayout({
   children,
@@ -40,86 +40,58 @@ export default async function StoreAdminLayout({
   }
 
   const base = `/tienda/${slug}/administracion`;
-  const nav = STORE_ADMIN_NAV.filter(
+  const nav: AdminNavItem[] = STORE_ADMIN_NAV.filter(
     (item) => item.permission === null || can(access, item.permission),
-  );
+  ).map((item) => ({
+    href: `${base}${item.href}`,
+    label: item.label,
+  }));
 
   return (
-    <div className="min-h-dvh bg-background">
-      <header className="border-b border-line bg-card/80 backdrop-blur-lg">
-        <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-          <div className="flex min-w-0 items-center gap-3">
-            <Link
-              href={base}
-              className="flex size-10 shrink-0 items-center justify-center rounded-[var(--r-btn)] bg-primary text-primary-foreground"
-              aria-label="Ir al resumen"
-            >
-              <Store className="size-[18px]" aria-hidden />
-            </Link>
-            <div className="min-w-0">
-              <p className="truncate text-[15px] font-medium tracking-tight">{store.name}</p>
-              <p className="truncate font-mono text-[11px] tracking-wide text-muted-foreground uppercase">
-                Panel de administración · {access.role === 'owner' ? 'Propietario' : 'Trabajador'}
-              </p>
+    <ConsoleShell
+      workspaceLabel={store.name}
+      workspaceHref={base}
+      workspaceMeta={`/tienda/${slug}`}
+      badge={access.role === 'owner' ? 'Propietario' : 'Trabajador'}
+      brandIcon={<Store className="size-3.5" aria-hidden />}
+      nav={nav}
+      userEmail={user.email}
+      topActions={
+        <>
+          <span className="font-mono text-[10px] text-muted-foreground">{user.email}</span>
+          <Link
+            href={`/tienda/${slug}`}
+            className="inline-flex h-8 items-center gap-1.5 rounded-[var(--r-sm)] border border-line-strong bg-card px-3 text-[11px] font-medium transition-colors hover:bg-accent"
+          >
+            <ExternalLink className="size-3" aria-hidden />
+            Ver tienda
+          </Link>
+        </>
+      }
+      notice={
+        access.readOnly ? (
+          <div className="border-b border-amber-200 bg-amber-50">
+            <div className="mx-auto flex w-full max-w-[1400px] items-center gap-2 px-4 py-2 text-[11px] text-amber-900 sm:px-5 lg:px-6">
+              <Eye className="size-3.5 shrink-0" aria-hidden />
+              Acceso de solo lectura como superadmin. Los cambios están deshabilitados.
             </div>
           </div>
-
-          <div className="flex items-center gap-2 text-sm">
-            <Link
-              href={`/tienda/${slug}`}
-              className="inline-flex h-9 items-center gap-1.5 rounded-[var(--r-btn)] border border-line-strong px-3 font-medium transition-colors duration-150 hover:bg-accent"
-            >
-              <ExternalLink className="size-4" aria-hidden />
-              Ver tienda
-            </Link>
-            <span className="hidden max-w-40 truncate text-xs text-muted-foreground lg:inline">
-              {user.email}
-            </span>
-            <form action={logoutAction}>
-              <button
-                type="submit"
-                className="inline-flex h-9 items-center gap-1.5 rounded-[var(--r-btn)] px-3 text-muted-foreground transition-colors duration-150 hover:bg-accent hover:text-foreground"
-              >
-                <LogOut className="size-4" aria-hidden />
-                <span className="sr-only sm:not-sr-only">Salir</span>
-              </button>
-            </form>
-          </div>
+        ) : undefined
+      }
+      sidebarFoot={
+        <div className="text-[11px] leading-relaxed text-muted-foreground">
+          <p className="section-label mb-1.5">Tu enlace público</p>
+          <Link
+            href={`/tienda/${slug}`}
+            className="block truncate font-mono text-[10px] text-foreground underline-offset-4 hover:underline"
+          >
+            /tienda/{slug}
+          </Link>
+          <p className="mt-2">Los pedidos llegan por WhatsApp.</p>
         </div>
-      </header>
-
-      {access.readOnly ? (
-        <div className="border-b border-amber-200 bg-amber-50">
-          <div className="mx-auto flex w-full max-w-7xl items-center gap-2 px-4 py-2 text-xs text-amber-900">
-            <Eye className="size-4" aria-hidden />
-            Estás viendo esta tienda como superadmin: solo lectura. Los cambios están deshabilitados.
-          </div>
-        </div>
-      ) : null}
-
-      <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 py-6 lg:grid-cols-[220px_1fr]">
-        <aside>
-          <AdminNav
-            items={nav.map((item) => ({
-              href: `${base}${item.href}`,
-              label: item.label,
-              icon: null,
-            }))}
-          />
-
-          <div className="mt-3 hidden rounded-[var(--r-md)] border border-border bg-card p-4 text-xs text-muted-foreground lg:block">
-            Tu tienda pública:
-            <Link
-              href={`/tienda/${slug}`}
-              className="mt-1 block truncate font-medium text-foreground underline-offset-4 hover:underline"
-            >
-              /tienda/{slug}
-            </Link>
-          </div>
-        </aside>
-
-        <main id="contenido" className="min-w-0">{children}</main>
-      </div>
-    </div>
+      }
+    >
+      {children}
+    </ConsoleShell>
   );
 }

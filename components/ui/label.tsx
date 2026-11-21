@@ -5,7 +5,7 @@ function Label({ className, ...props }: ComponentProps<'label'>) {
   return (
     <label
       data-slot="label"
-      className={cn('mb-1.5 block text-[13px] font-medium leading-none', className)}
+      className={cn('mb-1.5 block text-[11px] font-medium leading-none', className)}
       {...props}
     />
   );

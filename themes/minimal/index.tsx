@@ -45,7 +45,7 @@ function StoreShell({ store, children }: ShellProps) {
       className="flex min-h-dvh flex-col bg-[var(--store-bg)] text-[var(--store-fg)]"
     >
       <header className="sticky top-0 z-30 border-b border-[var(--store-fg)]/10 bg-[var(--store-bg)]/80 backdrop-blur-md">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-4">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-2.5">
           <Link
             href={`/tienda/${store.slug}`}
             className="flex min-w-0 items-center gap-3"
@@ -57,19 +57,19 @@ function StoreShell({ store, children }: ShellProps) {
                 alt=""
                 width={40}
                 height={40}
-                className="size-10 rounded-lg object-cover"
+                className="size-8 rounded-[var(--store-radius)] object-cover"
               />
             ) : (
-              <span className="flex size-10 items-center justify-center rounded-lg bg-[var(--store-primary)] text-sm font-bold text-white">
+              <span className="flex size-8 items-center justify-center rounded-[var(--store-radius)] bg-[var(--store-primary)] text-[11px] font-semibold text-white">
                 {store.name.slice(0, 2).toUpperCase()}
               </span>
             )}
-            <span className="truncate text-base font-semibold">{store.name}</span>
+            <span className="truncate text-[13px] font-semibold tracking-tight">{store.name}</span>
           </Link>
 
           <Link
             href={`/tienda/${store.slug}/carrito`}
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--store-fg)]/15 px-4 py-2 text-sm font-medium transition-colors hover:bg-[var(--store-primary)] hover:text-white"
+            className="inline-flex h-9 items-center gap-2 rounded-[var(--store-radius)] border border-[var(--store-fg)]/15 px-3 text-[12px] font-medium transition-colors hover:bg-[var(--store-primary)] hover:text-white"
           >
             Carrito
             <CartIndicator storeSlug={store.slug} />
@@ -95,21 +95,21 @@ function ModernShell({ store, children }: ShellProps) {
       <header className="sticky top-0 z-30 border-b border-[var(--store-fg)]/10 bg-[var(--store-bg)]/90 backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3">
           <Link href={`/tienda/${store.slug}`} className="flex items-center gap-2" aria-label={`${store.name}, inicio`}>
-            <span className="flex size-9 items-center justify-center rounded-lg bg-[var(--store-primary)] text-xs font-bold text-white">
+            <span className="flex size-8 items-center justify-center rounded-[var(--store-radius)] bg-[var(--store-primary)] text-[11px] font-semibold text-white">
               {store.name.slice(0, 2).toUpperCase()}
             </span>
-            <span className="text-base font-semibold tracking-tight">{store.name}</span>
+            <span className="text-[13px] font-semibold tracking-tight">{store.name}</span>
           </Link>
 
           <div className="hidden flex-1 items-center justify-center md:flex">
-            <div className="flex w-full max-w-md items-center gap-2 rounded-full border border-[var(--store-fg)]/15 px-4 py-2 text-sm text-[var(--store-fg)]/60">
+            <div className="flex h-9 w-full max-w-md items-center gap-2 rounded-[var(--store-radius)] border border-[var(--store-fg)]/15 px-3 text-[12px] text-[var(--store-fg)]/60">
               Buscar productos…
             </div>
           </div>
 
           <Link
             href={`/tienda/${store.slug}/carrito`}
-            className="inline-flex items-center gap-2 rounded-full bg-[var(--store-primary)] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+            className="inline-flex h-9 items-center gap-2 rounded-[var(--store-radius)] bg-[var(--store-primary)] px-3 text-[12px] font-medium text-white hover:opacity-90"
           >
             Carrito
             <CartIndicator storeSlug={store.slug} />
@@ -132,7 +132,7 @@ function BoutiqueShell({ store, children }: ShellProps) {
       className="flex min-h-dvh flex-col bg-[var(--store-bg)] text-[var(--store-fg)]"
     >
       <header className="border-b border-[var(--store-fg)]/10 bg-[var(--store-bg)]">
-        <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-6 py-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
           <Link
             href={`/tienda/${store.slug}`}
             className="flex items-center justify-center gap-3 sm:justify-start"
@@ -151,7 +151,7 @@ function BoutiqueShell({ store, children }: ShellProps) {
                 {store.name.slice(0, 1)}
               </span>
             )}
-            <span className="font-display text-2xl tracking-tight">{store.name}</span>
+            <span className="font-display text-xl tracking-tight">{store.name}</span>
           </Link>
 
           <nav className="flex items-center justify-center gap-6 text-sm">

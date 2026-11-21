@@ -7,7 +7,7 @@ function Input({ className, type, ...props }: ComponentProps<'input'>) {
       type={type}
       data-slot="input"
       className={cn(
-        'flex h-11 w-full min-w-0 rounded-[var(--r-btn)] border border-input bg-background px-3 py-2 text-sm shadow-xs transition-colors outline-none',
+        'flex h-9 w-full min-w-0 rounded-[var(--r-sm)] border border-input bg-card px-2.5 py-1.5 text-[12px] shadow-[0_1px_2px_color-mix(in_oklab,var(--ink)_4%,transparent)] transition-colors outline-none max-sm:h-11',
         'placeholder:text-muted-foreground hover:border-line-strong disabled:cursor-not-allowed disabled:opacity-50',
         'focus-visible:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/25',
         'aria-invalid:border-destructive aria-invalid:ring-destructive/20',

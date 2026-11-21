@@ -9,7 +9,7 @@ function Badge({
   variant?: 'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline';
 }) {
   const variants: Record<string, string> = {
-    default: 'bg-primary text-primary-foreground',
+    default: 'bg-primary/10 text-primary ring-1 ring-primary/15',
     secondary: 'bg-secondary text-secondary-foreground',
     success: 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/15',
     warning: 'bg-amber-50 text-amber-800 ring-1 ring-amber-600/15',
@@ -21,7 +21,7 @@ function Badge({
     <span
       data-slot="badge"
       className={cn(
-        'inline-flex items-center rounded-full px-2.5 py-0.5 font-mono text-[11px] font-medium whitespace-nowrap',
+        'inline-flex items-center rounded-[var(--r-xs)] px-1.5 py-0.5 font-mono text-[10px] font-medium whitespace-nowrap',
         variants[variant],
         className,
       )}
